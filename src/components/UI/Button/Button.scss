@@ -1,0 +1,46 @@
+@import "../../../sass/variables";
+
+.btn {
+  font-weight: 700;
+  border: none;
+  transition: 0.3s ease-out;
+}
+
+.btn--submit {
+  display: block;
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background-color: $color-primary;
+  color: $color-background;
+  margin-top: 1rem;
+
+  &:hover,
+  &:active {
+    background-color: $color-background;
+    color: $color-accent;
+    border: 1px solid $color-accent;
+  }
+}
+
+.btn--inline {
+  color: $color-accent;
+  background: none;
+}
+
+.btn--logout {
+  display: block;
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid $color-error;
+  border-radius: 0.5rem;
+  background: none;
+  color: $color-error;
+
+  &:hover,
+  &:active {
+    background-color: $color-error;
+    color: $color-background;
+  }
+}

@@ -1,0 +1,74 @@
+@import "../../../sass/variables";
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input__label {
+  color: $color-primary;
+  font-weight: 500;
+}
+
+.input__field-wrapper {
+  border: 0.1rem solid $color-border;
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  transition: 0.3s ease-out;
+
+  &:has(.input__field:focus) {
+    border: 0.1rem solid $color-accent;
+  }
+}
+
+.input__icon {
+  color: $color-secondary;
+  font-size: 1.25rem;
+
+  @media (max-width: 23.25rem) {
+    display: none;
+  }
+}
+
+.input__field {
+  border: none;
+  padding: 0.625rem 0;
+  flex: 1;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $color-tertiary;
+  }
+}
+
+// error
+
+.input.error {
+  .input__field-wrapper {
+    border: 1px solid $color-error;
+  }
+
+  .input__field::placeholder {
+    color: rgba($color-error, 0.5);
+  }
+
+  .input__icon {
+    color: $color-error;
+  }
+}
+
+.input__error {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  color: $color-error;
+}

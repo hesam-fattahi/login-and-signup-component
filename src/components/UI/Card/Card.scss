@@ -1,0 +1,27 @@
+@import "../../../sass/variables";
+
+.card {
+  max-width: 24rem;
+  width: 100%;
+  background: $color-background;
+  color: $color-secondary;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+}
+
+.card__title {
+  font-size: 1.5rem;
+  color: $color-primary;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card .note {
+  color: $color-tertiary;
+  margin-bottom: 1.5rem;
+}
