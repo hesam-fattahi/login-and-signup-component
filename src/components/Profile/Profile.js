@@ -4,6 +4,7 @@ import Button from "../UI/Button/Button";
 
 const Profile = (props) => {
   const handleLogoutClick = () => {
+    localStorage.removeItem("loggedIn");
     props.onLogoutClick();
   };
 

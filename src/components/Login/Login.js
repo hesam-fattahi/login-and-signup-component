@@ -5,11 +5,13 @@ import { useState } from "react";
 import Card from "../UI/Card/Card";
 import Form from "../UI/Form/Form";
 import Input from "../UI/Input/Input";
+import Checkbox from "../UI/Input/Checkbox";
 import Button from "../UI/Button/Button";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [saveLogin, setSaveLogin] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleEmailChange = (event) => {
@@ -20,8 +22,13 @@ const Login = (props) => {
     setPassword(event.target.value);
   };
 
+  const handleCheckboxChange = (event) => {
+    setSaveLogin(event.target.checked);
+  };
+
   const handleLogin = () => {
     let newErrors = {};
+    setErrors({});
     let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
     let account = allAccounts.find((acc) => acc.email === email);
 
@@ -40,13 +47,16 @@ const Login = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!handleLogin()) return;
+    let account = handleLogin();
+    if (!account) return;
 
-    props.onAccountLogin(handleLogin());
+    if (saveLogin) localStorage.setItem("loggedIn", JSON.stringify(account));
+    props.onAccountLogin(account);
     props.onLoginSubmit();
 
     setEmail("");
     setPassword("");
+    setSaveLogin(false);
   };
 
   const handleSignupClick = () => {
@@ -73,6 +83,12 @@ const Login = (props) => {
           value={password}
           onChange={handlePasswordChange}
           error={errors["password"]}
+        />
+        <Checkbox
+          title="Remember me"
+          name="save-login"
+          onChange={handleCheckboxChange}
+          checked={saveLogin}
         />
         <Button type="submit" className="btn--submit">
           Log In

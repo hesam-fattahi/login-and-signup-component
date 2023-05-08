@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./sass/main.scss";
 
@@ -44,6 +44,16 @@ const App = () => {
       />
     ),
   };
+
+  useEffect(() => {
+    const account = JSON.parse(localStorage.getItem("loggedIn")) || null;
+    if (account) {
+      setLoggedInAccount(account);
+      setCurrentComponent("Profile");
+      console.log("the account exists");
+      console.log(account);
+    }
+  }, []);
 
   return <div className="app">{components[currentComponent]}</div>;
 };
