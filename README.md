@@ -17,7 +17,7 @@ This app uses [React.js](https://react.dev/) and [Sass](https://sass-lang.com/) 
 
 ## Installation and usage
 
-1. Clone the repository to your local machine by running `git clone https://github.com/your-username/login-app.git`
+1. Clone the repository to your local machine by running `git clone https://github.com/hesam-fattahi/login-and-signup-component.git`
 2. Navigate to the project directory
 3. Run `npm install` to install the dependencies
 4. Run `npm start` to start the development server
@@ -28,10 +28,10 @@ This app uses [React.js](https://react.dev/) and [Sass](https://sass-lang.com/) 
 This project is currently in development. Future updates will include additional features and improvements.
 Some of the features that will be added to the project:
 
-- Remember me checkbox in the login form
-- Editing account information
-- Deleting account
-- Clear button in inputs
+- [ ] Remember me checkbox in the login form
+- [ ] Editing account information
+- [ ] Deleting account
+- [ ] Clear button in inputs
 
 ## Contributions
 
