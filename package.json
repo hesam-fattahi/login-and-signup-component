@@ -1,5 +1,5 @@
 {
-  "name": "login-component",
+  "name": "login-and-signup-component",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
