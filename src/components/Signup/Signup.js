@@ -3,7 +3,7 @@ import Card from "../UI/Card/Card";
 import Form from "../UI/Form/Form";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Signup = (props) => {
   const [fullName, setFullName] = useState("");
@@ -22,6 +22,19 @@ const Signup = (props) => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  useEffect(() => {
+    if (fullName.trim().length > 0) delete errors.fullName;
+  }, [fullName, errors]);
+
+  useEffect(() => {
+    if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email))
+      delete errors.email;
+  }, [email, errors]);
+
+  useEffect(() => {
+    if (password.trim().length >= 8) delete errors.password;
+  }, [password, errors]);
 
   const isFormValid = () => {
     let newErrors = {};
