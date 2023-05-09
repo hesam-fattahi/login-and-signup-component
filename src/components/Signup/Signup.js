@@ -3,7 +3,7 @@ import Card from "../UI/Card/Card";
 import Form from "../UI/Form/Form";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
-import { useEffect, useState } from "react";
+import useState from "react";
 
 const Signup = (props) => {
   const [fullName, setFullName] = useState("");
@@ -23,51 +23,63 @@ const Signup = (props) => {
     setPassword(event.target.value);
   };
 
-  useEffect(() => {
-    if (fullName.trim().length > 0) delete errors.fullName;
-  }, [fullName, errors]);
+  const validateForm = (account) => {
+    let errorMessages = {};
 
-  useEffect(() => {
-    if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email))
-      delete errors.email;
-  }, [email, errors]);
+    if (account.fullName.trim().length <= 0)
+      errorMessages["fullName"] = "Please enter your full name.";
 
-  useEffect(() => {
-    if (password.trim().length >= 8) delete errors.password;
-  }, [password, errors]);
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(account.email))
+      errorMessages["email"] = "Invalid email address.";
 
-  const isFormValid = () => {
-    let newErrors = {};
+    if (account.password.trim().length < 8)
+      errorMessages["password"] =
+        "Password must be at least 8 characters long.";
 
-    if (fullName.trim().length <= 0)
-      newErrors["fullName"] = "Please enter your full name.";
+    return errorMessages;
+  };
 
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email))
-      newErrors["email"] = "Invalid email address.";
+  const isAccountRegistered = (obj) => {
+    let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
+    const registeredAccount = allAccounts.find(
+      (acc) => acc.email === obj.email
+    );
+    if (registeredAccount)
+      setErrors((prevErr) => ({
+        ...prevErr,
+        email:
+          "This email address is already registered. Please try logging in or use a different email address to sign up.",
+      }));
 
-    if (password.trim().length < 8)
-      newErrors["password"] = "Password must be at least 8 characters long.";
+    return registeredAccount;
+  };
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const saveAccount = (obj) => {
+    let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
+    allAccounts.push(obj);
+    localStorage.setItem("accounts", JSON.stringify(allAccounts));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    if (!isFormValid()) return;
 
     const newAccount = {
       fullName: fullName,
       email: email,
       password: password,
     };
-    let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
-    allAccounts.push(newAccount);
-    localStorage.setItem("accounts", JSON.stringify(allAccounts));
+
+    const err = validateForm(newAccount);
+    setErrors(err);
+
+    if (Object.keys(err) > 0) return;
+    if (isAccountRegistered(newAccount)) return;
+
+    saveAccount(newAccount);
 
     props.onAccountLogin(newAccount);
     props.onSignupSubmit();
+
     setFullName("");
     setEmail("");
     setPassword("");
