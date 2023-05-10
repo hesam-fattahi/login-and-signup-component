@@ -3,40 +3,76 @@ import Card from "../UI/Card/Card";
 import Form from "../UI/Form/Form";
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
-import useState from "react";
+import { useState } from "react";
+
+const saveAccount = (obj) => {
+  let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
+  allAccounts.push(obj);
+  localStorage.setItem("accounts", JSON.stringify(allAccounts));
+};
+
+const initialState = { value: "", isValid: false, error: "" };
 
 const Signup = (props) => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [fullName, setFullName] = useState(initialState);
+  const [email, setEmail] = useState(initialState);
+  const [password, setPassword] = useState(initialState);
 
   const handleFullNameChange = (event) => {
-    setFullName(event.target.value);
+    const value = event.target.value;
+    const isValid = value.trim().length > 1;
+    setFullName((prevState) => ({
+      value: value,
+      isValid: isValid,
+      error: isValid ? "" : prevState.error,
+    }));
   };
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    const value = event.target.value;
+    const isValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value);
+    setEmail((prevState) => ({
+      value: value,
+      isValid: isValid,
+      error: isValid ? "" : prevState.error,
+    }));
   };
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    const isValid = value.trim().length >= 8;
+    setPassword((prevState) => ({
+      value: value,
+      isValid: isValid,
+      error: isValid ? "" : prevState.error,
+    }));
   };
 
-  const validateForm = (account) => {
-    let errorMessages = {};
+  const handleFullNameBlur = () => {
+    if (fullName.error.length > 0) {
+      setFullName((state) => ({
+        ...state,
+        error: state.isValid ? "" : state.error,
+      }));
+    }
+  };
 
-    if (account.fullName.trim().length <= 0)
-      errorMessages["fullName"] = "Please enter your full name.";
+  const handleEmailBlur = () => {
+    if (email.error.length > 0) {
+      setEmail((state) => ({
+        ...state,
+        error: state.isValid ? "" : state.error,
+      }));
+    }
+  };
 
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(account.email))
-      errorMessages["email"] = "Invalid email address.";
-
-    if (account.password.trim().length < 8)
-      errorMessages["password"] =
-        "Password must be at least 8 characters long.";
-
-    return errorMessages;
+  const handlePasswordBlur = () => {
+    if (password.error.length > 0) {
+      setPassword((state) => ({
+        ...state,
+        error: state.isValid ? "" : state.error,
+      }));
+    }
   };
 
   const isAccountRegistered = (obj) => {
@@ -44,45 +80,61 @@ const Signup = (props) => {
     const registeredAccount = allAccounts.find(
       (acc) => acc.email === obj.email
     );
-    if (registeredAccount)
-      setErrors((prevErr) => ({
-        ...prevErr,
-        email:
+
+    if (registeredAccount) {
+      setEmail((state) => ({
+        ...state,
+        error:
           "This email address is already registered. Please try logging in or use a different email address to sign up.",
       }));
-
-    return registeredAccount;
-  };
-
-  const saveAccount = (obj) => {
-    let allAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
-    allAccounts.push(obj);
-    localStorage.setItem("accounts", JSON.stringify(allAccounts));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    let isFormValid = true;
+
     const newAccount = {
-      fullName: fullName,
-      email: email,
-      password: password,
+      fullName: fullName.value,
+      email: email.value,
+      password: password.value,
     };
 
-    const err = validateForm(newAccount);
-    setErrors(err);
+    isAccountRegistered(newAccount);
 
-    if (Object.keys(err) > 0) return;
-    if (isAccountRegistered(newAccount)) return;
+    if (!fullName.isValid) {
+      setFullName((state) => ({
+        ...state,
+        error: "Please enter your full name.",
+      }));
+      isFormValid = false;
+    }
+    if (!email.isValid) {
+      setEmail((state) => ({
+        ...state,
+        error: "Invalid email address.",
+      }));
+      isFormValid = false;
+    }
+    if (!password.isValid) {
+      setPassword((state) => ({
+        ...state,
+        error: "Password must be at least 8 characters long.",
+      }));
+      isFormValid = false;
+    }
+
+    if (!isFormValid) return;
 
     saveAccount(newAccount);
 
     props.onAccountLogin(newAccount);
     props.onSignupSubmit();
 
-    setFullName("");
-    setEmail("");
-    setPassword("");
+    setFullName(initialState);
+    setEmail(initialState);
+    setPassword(initialState);
   };
 
   const handleLoginClick = () => {
@@ -97,27 +149,30 @@ const Signup = (props) => {
           label="Full name"
           placeholder="Enter your full name"
           icon="person"
-          value={fullName}
+          value={fullName.value}
           onChange={handleFullNameChange}
-          error={errors["fullName"]}
+          onBlur={handleFullNameBlur}
+          error={fullName.error}
         />
         <Input
           type="email"
           label="Email"
           placeholder="Enter your email"
           icon="mail"
-          value={email}
+          value={email.value}
           onChange={handleEmailChange}
-          error={errors["email"]}
+          onBlur={handleEmailBlur}
+          error={email.error}
         />
         <Input
           type="password"
           label="Password"
           placeholder="Enter your password"
           icon="lock-closed"
-          value={password}
+          value={password.value}
           onChange={handlePasswordChange}
-          error={errors["password"]}
+          onBlur={handlePasswordBlur}
+          error={password.error}
         />
         <Button type="submit" className="btn--submit">
           Sign Up
