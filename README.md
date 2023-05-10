@@ -28,7 +28,7 @@ This app uses [React.js](https://react.dev/) and [Sass](https://sass-lang.com/) 
 This project is currently in development. Future updates will include additional features and improvements.
 Some of the features that will be added to the project:
 
-- [ ] Remember me checkbox in the login form
+- [x] Remember me checkbox in the login form
 - [ ] Editing account information
 - [ ] Deleting account
 - [ ] Clear button in inputs
