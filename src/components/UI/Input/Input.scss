@@ -30,10 +30,6 @@
 .input__icon {
   color: $color-secondary;
   font-size: 1.25rem;
-
-  @media (max-width: 23.25rem) {
-    display: none;
-  }
 }
 
 .input__field {
@@ -48,6 +44,14 @@
   &::placeholder {
     color: $color-tertiary;
   }
+}
+
+.input__toggle {
+  cursor: pointer;
+  border: none;
+  background: none;
+  display: grid;
+  place-items: center;
 }
 
 // error
