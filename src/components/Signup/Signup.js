@@ -17,6 +17,7 @@ const Signup = (props) => {
   const [fullName, setFullName] = useState(initialState);
   const [email, setEmail] = useState(initialState);
   const [password, setPassword] = useState(initialState);
+  const [passwordRepeat, setPasswordRepeat] = useState(initialState);
 
   const handleFullNameChange = (event) => {
     const value = event.target.value;
@@ -48,6 +49,16 @@ const Signup = (props) => {
     }));
   };
 
+  const handlePasswordRepeatChange = (event) => {
+    const value = event.target.value;
+    const isValid = value === password.value;
+    setPasswordRepeat((prevState) => ({
+      value: value,
+      isValid: isValid,
+      error: isValid ? "" : prevState.error,
+    }));
+  };
+
   const handleFullNameBlur = () => {
     if (fullName.error.length > 0) {
       setFullName((state) => ({
@@ -67,6 +78,15 @@ const Signup = (props) => {
   };
 
   const handlePasswordBlur = () => {
+    if (password.error.length > 0) {
+      setPassword((state) => ({
+        ...state,
+        error: state.isValid ? "" : state.error,
+      }));
+    }
+  };
+
+  const handlePasswordRepeatBlur = () => {
     if (password.error.length > 0) {
       setPassword((state) => ({
         ...state,
@@ -124,6 +144,13 @@ const Signup = (props) => {
       }));
       isFormValid = false;
     }
+    if (!passwordRepeat.isValid) {
+      setPasswordRepeat((state) => ({
+        ...state,
+        error: "Passwords do not match.",
+      }));
+      isFormValid = false;
+    }
 
     if (!isFormValid) return;
 
@@ -173,6 +200,16 @@ const Signup = (props) => {
           onChange={handlePasswordChange}
           onBlur={handlePasswordBlur}
           error={password.error}
+        />
+        <Input
+          type="password"
+          label="Confirm Password"
+          placeholder="Repeat your password"
+          icon="checkmark-done"
+          value={passwordRepeat.value}
+          onChange={handlePasswordRepeatChange}
+          onBlur={handlePasswordRepeatBlur}
+          error={passwordRepeat.error}
         />
         <Button type="submit" className="btn--submit">
           Sign Up
