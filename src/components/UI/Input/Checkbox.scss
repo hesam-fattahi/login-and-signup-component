@@ -1,6 +1,7 @@
 @import "../../../sass/variables";
 
 .checkbox__wrapper {
+  margin-left: 0.5rem;
   position: relative;
 
   display: flex;
@@ -35,7 +36,4 @@
   &:checked ~ .checkbox__checkmark::after {
     display: block;
   }
-}
-
-.checkbox__title {
 }
