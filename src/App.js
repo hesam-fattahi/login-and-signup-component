@@ -50,8 +50,6 @@ const App = () => {
     if (account) {
       setLoggedInAccount(account);
       setCurrentComponent("Profile");
-      console.log("the account exists");
-      console.log(account);
     }
   }, []);
 
