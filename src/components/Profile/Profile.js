@@ -8,6 +8,15 @@ const Profile = (props) => {
     props.onLogoutClick();
   };
 
+  const handleDeleteAccountClick = () => {
+    let accounts = JSON.parse(localStorage.getItem("accounts"));
+    let newAccounts = accounts.filter(
+      (acc) => acc.email !== props.profileInfo.email
+    );
+    localStorage.setItem("accounts", JSON.stringify(newAccounts));
+    handleLogoutClick();
+  };
+
   return (
     <Card className="profile" title="Profile">
       <h2>Welcome back!</h2>
@@ -20,9 +29,26 @@ const Profile = (props) => {
         <p className="profile__info-name">{props.profileInfo.fullName}</p>
         <p className="profile__info-email">{props.profileInfo.email}</p>
       </div>
-      <Button className="btn--logout" onClick={handleLogoutClick}>
-        Log Out
-      </Button>
+      <div className="profile__btn-container">
+        <Button className="btn--profile btn--edit-account">
+          <ion-icon name="create-outline"></ion-icon>
+          Edit account
+        </Button>
+        <Button
+          className="btn--profile btn--logout"
+          onClick={handleLogoutClick}
+        >
+          <ion-icon name="log-out-outline"></ion-icon>
+          Log Out
+        </Button>
+        <Button
+          className="btn--profile btn--delete-account"
+          onClick={handleDeleteAccountClick}
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+          Delete account
+        </Button>
+      </div>
     </Card>
   );
 };

@@ -1,8 +1,5 @@
 @import "../../sass/variables";
 
-.profile {
-}
-
 .bold {
   font-weight: 500;
 }
@@ -38,4 +35,14 @@
     font-size: 0.875rem;
     color: $color-tertiary;
   }
+}
+
+.profile__btn-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.btn--delete-account {
+  grid-column: 1 / -1;
 }

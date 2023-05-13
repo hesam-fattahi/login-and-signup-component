@@ -29,18 +29,43 @@
   background: none;
 }
 
-.btn--logout {
-  display: block;
-  width: 100%;
+.btn--profile {
   padding: 0.625rem;
-  border: 1px solid $color-error;
   border-radius: 0.5rem;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  ion-icon {
+    font-size: 1.25rem;
+  }
+}
+
+.btn--logout,
+.btn--edit-account {
+  color: $color-secondary;
+
+  &:hover,
+  &:active {
+    background-color: $color-border;
+  }
+}
+
+.btn--delete-account {
+  background-color: rgba($color-error, 0.05);
   color: $color-error;
 
   &:hover,
   &:active {
-    background-color: $color-error;
-    color: $color-background;
+    background-color: rgba($color-error, 0.15);
   }
+}
+
+.btn--close-error {
+  display: grid;
+  place-items: center;
+  background: none;
+  color: $color-primary;
+  font-size: 1.25rem;
 }
