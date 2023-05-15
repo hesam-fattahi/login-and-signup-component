@@ -24,7 +24,7 @@ const Input = (props) => {
           onBlur={props.onBlur}
           value={props.value}
         />
-        {props.type === "password" && (
+        {props.type === "password" && props.value.length > 0 && (
           <button
             type="button"
             className="input__toggle"
